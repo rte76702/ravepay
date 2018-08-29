@@ -1,0 +1,38 @@
+
+<div class="result_table">
+	<div class="lead text-center">
+		<div class="res_row">
+			<span class="res_label">Status:</span>
+			<span class="res_value">{{ txn_status }}</span>
+		</div>
+		<div class="res_row">
+			<span class="res_label">Reference:</span>
+			<span class="res_value">{{ txn_reference }}</span>
+		</div>
+	</div>
+	<div class="btn_div text-center">
+		<button class="btn btn-block btn-secondary" onclick="window.location.href='/'">Close</button>
+	</div>
+</div>
+
+
+<style>
+	span.res_value {
+	    display: block;
+	    background-color: #f3f3f3;
+	}
+	.result_table {
+	    max-width: 400px;
+	    margin: auto;
+	    min-width: 300px;
+	}
+	.res_row {
+		margin-bottom: 20px;
+	}
+	.result_table>.lead {
+		margin-bottom: 30px;
+	}
+	.hero-and-content {
+	    background-color: #f5f7fa;
+	}
+</style>

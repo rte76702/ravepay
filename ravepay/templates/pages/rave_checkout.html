@@ -1,0 +1,27 @@
+{% extends "templates/web.html" %}
+
+{% block title %} Payment {% endblock %}
+
+{%- block header -%}{% endblock %}
+
+{% block script %}
+<script src="https://{{url}}/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+<script>{% include "templates/pages/rave_checkout.js" %}</script>
+{% endblock %}
+
+{%- block page_content -%}
+
+<p class='lead text-center centered'>
+	<span class='rave-loading'>Loading Payment System</span>
+	<span class='rave-confirming hidden'>Confirming Payment</span>
+</p>
+
+{% endblock %}
+
+{% block style %}
+<style>
+	header, footer {
+		display: none;
+	}
+</style>
+{% endblock %}

@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include ravepay *.css
+recursive-include ravepay *.csv
+recursive-include ravepay *.html
+recursive-include ravepay *.ico
+recursive-include ravepay *.js
+recursive-include ravepay *.json
+recursive-include ravepay *.md
+recursive-include ravepay *.png
+recursive-include ravepay *.py
+recursive-include ravepay *.svg
+recursive-include ravepay *.txt
+recursive-exclude ravepay *.pyc
