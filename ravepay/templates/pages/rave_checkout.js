@@ -1,32 +1,42 @@
 
-var payWithRave = function(){
-	var x = {
-		PBFPubKey: "{{ public_key }}",
-		customer_email: "{{ payer_email }}",
-		amount: cint("{{ amount }}"),
-		customer_phone: "{{ payer_phone }}",
-        currency: "{{ currency }}",
-        payment_method: "both",
-        txref: "{{ txref }}",
-        meta: [{
-            metaname: "{{ reference_doctype }}",
-            metavalue: "{{ reference_docname }}"
-        }],
-        onclose: function() {},
-        callback: function(response) {
-        	console.log(response)
-			rave.make_payment_log(response, "{{ reference_doctype }}", "{{ reference_docname }}", "{{ token }}");
-            //x.close(); // use this to close the modal immediately after payment.
-        }
-    };
-    getpaidSetup(x);
-};
+
+frappe.provide('rave');
 
 $(document).ready(function(){
 	payWithRave()
 })
 
-frappe.provide('rave');
+function payWithRave(){
+	try {
+		var x = getpaidSetup({
+			PBFPubKey: "{{ public_key }}",
+			customer_email: "{{ payer_email }}",
+			amount: cint("{{ amount }}"),
+			customer_phone: "{{ payer_phone }}",
+	        currency: "{{ currency }}",
+	        payment_method: "both",
+	        txref: "{{ txref }}",
+	        meta: [{
+	            metaname: "{{ reference_doctype }}",
+	            metavalue: "{{ reference_docname }}"
+	        }],
+	        onclose: function() {
+	        	if (!rave.payment_callback) {
+	        		rave.make_payment_log(response, "{{ reference_doctype }}", "{{ reference_docname }}", "{{ token }}");
+	        	}
+	        },
+	        callback: function(response) {
+	        	rave.payment_callback = 1
+	            x.close(); // use this to close the modal immediately after payment.
+				rave.make_payment_log(response, "{{ reference_doctype }}", "{{ reference_docname }}", "{{ token }}");
+	        }
+	    });
+	} catch (e) {
+		rave.make_payment_log(response, "{{ reference_doctype }}", "{{ reference_docname }}", "{{ token }}");
+	}
+};
+
+
 
 rave.make_payment_log = function(response, doctype, docname, token){
 	$('.rave-loading').addClass('hidden');

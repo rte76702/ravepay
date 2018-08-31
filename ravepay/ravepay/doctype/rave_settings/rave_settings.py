@@ -48,7 +48,8 @@ class RaveSettings(Document):
 		settings = self.get_settings()
 
 		try:
-			url = 'https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/v2/verify'
+			url_host = 'ravesandboxapi.flutterwave.com' if cint(self.test) else 'api.ravepay.co'
+			url = 'https://%s/flwv3-pug/getpaidx/api/v2/verify'%url_host
 			req_data = {"txref": self.data.txref,"SECKEY": settings.secret}
 			r = requests.post(url, req_data)
 			resp = self.make_obj(r.json())
