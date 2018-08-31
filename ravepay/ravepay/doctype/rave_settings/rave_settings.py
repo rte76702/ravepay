@@ -14,10 +14,17 @@ class RaveSettings(Document):
 	supported_currencies = ["NGN"]
 
 	def validate(self):
-		create_payment_gateway('Rave')
-		call_hook_method('payment_gateway_enabled', gateway='Rave')
-		self.enabled = 1
-		frappe.msgprint(_('Gateway Enabled'))
+		if self.enable:
+			create_payment_gateway('Rave')
+			call_hook_method('payment_gateway_enabled', gateway='Rave')
+			self.enabled = 1
+			self.enable = None
+			frappe.msgprint('Gateway Enabled')
+		if self.disable:
+			delete_payment_gateway('Rave')
+			self.enabled = None
+			self.disable = None
+			frappe.msgprint('Gateway Disabled')
 
 	def validate_transaction_currency(self, currency):
 		if currency not in self.supported_currencies:
@@ -88,3 +95,7 @@ class RaveSettings(Document):
 			if isinstance(nd[key], dict):
 				nd[key] = self.make_obj(nd[key])
 		return nd
+
+def delete_payment_gateway(gateway):
+	frappe.db.sql("delete from `tabPayment Gateway` where \
+					gateway = '%s'"%gateway, auto_commit=1)
